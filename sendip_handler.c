@@ -17,7 +17,7 @@ void send_ip_handler(char *packet, unsigned int size)
 {
 	ip_optlen = ip_opt_build(ip_opt);
 
-	if (!opt_fragment && (size+ip_optlen+20 >= h_if_mtu))
+	if (!opt_fragment && (size+ip_optlen+20 > h_if_mtu))
 	{
 		/* auto-activate fragmentation */
 		virtual_mtu = h_if_mtu-20;

@@ -27,7 +27,7 @@ __u16 cksum(__u16 *buf, int nbytes)
 
 	if (nbytes == 1) {
 		oddbyte = 0;
-		*((__u16 *) &oddbyte) = *(__u16 *) buf;
+		*((__u16 *) &oddbyte) = *(__u8 *) buf;
 		sum += oddbyte;
 	}
 

@@ -64,13 +64,19 @@ void send_ip (char* src, char *dst, char *data, unsigned int datalen,
 			htons((unsigned short) rand()) :
 			htons((unsigned short) src_id);
 	}
-	else /* if you need fragmentation id must not be randomic */
+	else /* if you need fragmentation id must not be random but all fragments belonging to the
+          * the same IP packet must have the same id that is unique amongst other fragments. */
 	{
-		/* FIXME: when frag. enabled sendip_handler shold inc. ip->id */
-		/*        for every frame sent */
-		ip->id		= (src_id == -1) ?
-			htons(getpid() & 255) :
-			htons((unsigned short) src_id);
+        if(src_id == -1)
+        {
+            __u16 b16_counter = (__u16)sent_pkt;
+            __u16 b16_pid = getpid() & 0xff;
+            ip->id = htons(b16_pid + b16_counter);
+        }
+        else
+        {
+            ip->id = htons((unsigned short) src_id);
+        }
 	}
 
 #if defined OSTYPE_FREEBSD || defined OSTYPE_NETBSD | defined OSTYPE_BSDI

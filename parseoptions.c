@@ -559,13 +559,38 @@ int parse_options(int argc, char **argv)
 
 	if (opt_numeric == TRUE) opt_gethost = FALSE;
 
-	/* some error condition */
-	if (data_size+IPHDR_SIZE+TCPHDR_SIZE > 65535) {
-		printf("Option error: sorry, data size must be <= %lu\n",
-			(unsigned long)(65535-IPHDR_SIZE+TCPHDR_SIZE));
-		exit(1);
-	}
-	else if (count <= 0 && count != -1) {
+    /* some error conditions */
+    if (opt_rawipmode == TRUE) {
+        if (data_size+IPHDR_SIZE > 65535) {
+            printf("Option error: sorry, data size must be <= %lu\n",
+                   (unsigned long)(65535-IPHDR_SIZE));
+            exit(1);
+        }
+    }
+    else if (opt_icmpmode == TRUE) {
+        if (data_size+IPHDR_SIZE+ICMPHDR_SIZE > 65535) {
+            printf("Option error: sorry, data size must be <= %lu\n",
+                   (unsigned long)(65535-IPHDR_SIZE-ICMPHDR_SIZE));
+            exit(1);
+        }
+    }
+    else if (opt_udpmode == TRUE) {
+        if (data_size+IPHDR_SIZE+UDPHDR_SIZE > 65535) {
+            printf("Option error: sorry, data size must be <= %lu\n",
+                   (unsigned long)(65535-IPHDR_SIZE-UDPHDR_SIZE));
+            exit(1);
+        }
+    }
+    else { /* We want an 'else' here to check only if none of the above protocosl is switched on */
+        if (data_size+IPHDR_SIZE+TCPHDR_SIZE > 65535) {
+            printf("Option error: sorry, data size must be <= %lu\n",
+                   (unsigned long)(65535-IPHDR_SIZE-TCPHDR_SIZE));
+            exit(1);
+        }
+    }
+
+    /* some more error conditions */
+    if (count <= 0 && count != -1) {
 		printf("Option error: count must > 0\n");
 		exit(1);
 	}
