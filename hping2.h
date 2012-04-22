@@ -134,6 +134,9 @@ typedef unsigned int           u_int32_t;
 #define DEFAULT_RAW_IP_PROTOCOL		6 /* TCP */
 #define DEFAULT_TRACEROUTE_TTL		1
 
+/* use net/bpf.h instead of pcap/bpf.h */
+#define PCAP_DONT_INCLUDE_PCAP_BPF_H
+
 #define BIND_NONE	0		/* no bind */
 #define BIND_DPORT	1		/* bind destination port */
 #define BIND_TTL	2		/* bind ip->ttl */
