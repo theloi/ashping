@@ -48,7 +48,7 @@ void send_ip (char* src, char *dst, char *data, unsigned int datalen,
 	ip->ihl		= (IPHDR_SIZE + optlen + 3) >> 2;
 	ip->tos		= ip_tos;
 
-#if defined OSTYPE_FREEBSD || defined OSTYPE_NETBSD || defined OSTYPE_BSDI
+#if defined OSTYPE_FREEBSD || defined OSTYPE_NETBSD || defined OSTYPE_BSDI || defined __APPLE__
 /* FreeBSD */
 /* NetBSD */
 	ip->tot_len	= packetsize;
